@@ -1,105 +1,288 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fastminer - 採掘鯖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fastminer</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Arial", sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #e2e8f0;
-      text-align: center;
-    }
+<link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
-    header {
-      padding: 80px 20px 40px;
-    }
+<style>
+:root{
+  --bg:#0f0f10;
+  --stone:#1b1b1b;
+  --border:#363636;
+  --text:#ffffff;
+  --sub:#b0b0b0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:radial-gradient(circle at top,#2b2b2b,#0f0f10 60%);
+  color:white;
+  overflow-x:hidden;
+}
 
-    h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
-      color: #38bdf8;
-    }
+nav{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:25px 50px;
+  background:rgba(15,15,16,.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  z-index:1000;
+}
 
-    .subtitle {
-      font-size: 18px;
-      opacity: 0.9;
-    }
+.logo{
+  font-family:'Minecraft',sans-serif;
+  font-size:28px;
+}
 
-    .card {
-      max-width: 800px;
-      margin: 40px auto;
-      background: rgba(255,255,255,0.05);
-      padding: 30px;
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
+.nav-links{display:flex;gap:35px}
+.nav-links a{
+  color:#d0d0d0;
+  text-decoration:none;
+  transition:.2s;
+}
+.nav-links a:hover{color:white}
 
-    .highlight {
-      color: #fbbf24;
-      font-weight: bold;
-    }
+.hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
 
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 28px;
-      background: #5865F2;
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: bold;
-      transition: 0.2s;
-    }
+.hero > img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(.35) contrast(1.2) saturate(.85);
+  animation:bgZoom 20s ease-in-out infinite alternate;
+}
 
-    .btn:hover {
-      background: #4752c4;
-      transform: scale(1.05);
-    }
+@keyframes bgZoom{
+  from{transform:scale(1)}
+  to{transform:scale(1.12)}
+}
 
-    footer {
-      margin: 60px 0 30px;
-      font-size: 12px;
-      opacity: 0.6;
-    }
-  </style>
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85));
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  animation:heroShow 1.5s ease forwards;
+}
+
+@keyframes heroShow{
+  from{opacity:0;transform:translateY(40px) scale(.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.title-logo{
+  width:min(95vw,1000px);
+  margin:0 auto 25px;
+  display:block;
+  filter:drop-shadow(0 8px 0 rgba(0,0,0,.4))
+  drop-shadow(0 15px 35px rgba(0,0,0,.8));
+  animation:float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
+
+.hero p{
+  font-size:20px;
+  color:#d0d0d0;
+}
+
+.discord-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:340px;
+  height:64px;
+  margin-top:40px;
+  font-family:'Minecraft',sans-serif;
+  font-size:18px;
+  color:white;
+  text-decoration:none;
+  background:#6b6b6b;
+  border-top:4px solid #bdbdbd;
+  border-left:4px solid #bdbdbd;
+  border-right:4px solid #3d3d3d;
+  border-bottom:4px solid #3d3d3d;
+  animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+  50%{box-shadow:0 0 30px rgba(255,255,255,.15)}
+}
+
+.discord-btn:hover{
+  background:#7c7c7c;
+  color:#ffff55;
+}
+
+.scroll{
+  position:absolute;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+  50%{transform:translate(-50%,-10px)}
+}
+
+section{padding:120px 10%}
+
+.section-title{
+  color:#7d7d7d;
+  letter-spacing:3px;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.big-title{
+  font-size:clamp(40px,5vw,80px);
+  font-weight:900;
+}
+
+.description{
+  margin-top:25px;
+  max-width:750px;
+  line-height:2;
+  color:var(--sub);
+}
+
+.stats,.features{
+  display:grid;
+  gap:25px;
+  margin-top:50px;
+  grid-template-columns:repeat(3,1fr);
+}
+
+.stat,.card{
+  background:linear-gradient(180deg,#232323,#181818);
+  border:3px solid #2d2d2d;
+  padding:35px;
+}
+
+.card{
+  transition:.35s;
+}
+.card:hover{
+  transform:translateY(-10px) rotateX(8deg);
+  border-color:#8d8d8d;
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+
+.stat-number{
+  font-family:'Minecraft',sans-serif;
+  font-size:52px;
+}
+
+.discord{text-align:center}
+.discord h2{
+  font-family:'Minecraft',sans-serif;
+  font-size:clamp(45px,7vw,100px);
+}
+
+footer{
+  padding:50px;
+  text-align:center;
+  color:#666;
+}
+
+.fade{
+  opacity:0;
+  transform:translateY(80px) scale(.95);
+  transition:1s;
+}
+.fade.show{
+  opacity:1;
+  transform:none;
+}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .stats,.features{grid-template-columns:1fr}
+  .discord-btn{min-width:100%}
+}
+</style>
 </head>
-
 <body>
 
-  <header>
-    <h1>⛏️ Fastminer</h1>
-    <p class="subtitle">あの採掘鯖が、再び帰ってきた。</p>
-  </header>
+<nav>
+<div class="logo">FASTMINER</div>
+<div class="nav-links">
+<a href="#about">About</a>
+<a href="#features">Features</a>
+<a href="#discord">Discord</a>
+</div>
+</nav>
 
-  <div class="card">
-    <p>
-      以前の公開では、わずか1か月で<span class="highlight">900人突破</span>。<br>
-      再公開時には1か月で<span class="highlight">1300人達成</span>。
-    </p>
+<section class="hero">
+<img src="abcd.png" alt="Background">
+<div class="hero-content">
+<img src="title.png" class="title-logo" alt="Fastminer">
+<p>採掘に、革命を。</p>
+<a href="https://discord.gg/QgCVH6AkpY" class="discord-btn">⛏ サーバーに参加する</a>
+</div>
+<div class="scroll">SCROLL</div>
+</section>
 
-    <p>
-      今回は数か月ぶりの復活。<br>
-      プレイヤーデータはリセットされていますが、全員が同じスタートラインです。
-    </p>
+<section id="about" class="fade">
+<div class="section-title">ABOUT</div>
+<div class="big-title">石を掘り、<br>頂点を目指せ。</div>
+<div class="description">Fastminerは独自システムを搭載した採掘サーバーです。</div>
+</section>
 
-    <p>
-      採掘・育成・強化を最初から楽しみながら、<br>
-      一緒にサーバーを盛り上げていきましょう！
-    </p>
+<section id="features" class="fade">
+<div class="section-title">FEATURES</div>
+<div class="big-title">Fastminerの特徴</div>
+<div class="features">
+<div class="card"><h3>⛏️ 高速採掘</h3><p>快適な採掘体験。</p></div>
+<div class="card"><h3>💎 独自システム</h3><p>専用コンテンツ搭載。</p></div>
+<div class="card"><h3>🏆 ランキング</h3><p>競争できる環境。</p></div>
+</div>
+</section>
 
-    <a class="btn" href="https://discord.gg/QgCVH6AkpY" target="_blank">
-      Discordに参加する
-    </a>
-  </div>
+<section id="discord" class="discord fade">
+<h2>JOIN US</h2>
+<a href="https://discord.gg/QgCVH6AkpY" class="discord-btn">⛏ Discordに参加</a>
+</section>
 
-  <footer>
-    © Fastminer Community
-  </footer>
+<footer>© Fastminer</footer>
+
+<script>
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting) entry.target.classList.add("show");
+});
+});
+document.querySelectorAll(".fade").forEach(el=>observer.observe(el));
+</script>
 
 </body>
 </html>
